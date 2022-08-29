@@ -44,15 +44,18 @@ class Buttons:
         self.entry_one_string=entry_one_string ; self.entry_two_string=entry_two_string ; self.entry_three_string=entry_three_string 
         self.entry_four_string=entry_four_string ; self.entry_five_string=entry_five_string
 
-
     def display_numbers(self):
+        global button_show_list
         self.user_entry=self.entry_one_string.get()+","+self.entry_two_string.get()+","+self.entry_three_string.get()+","+self.entry_four_string.get()+","+self.entry_five_string.get() 
-        display_numbers=Label(SCREEN,text="The Numbers You Want To Sort Are : " +self.user_entry,bg="Steelblue1").place(x=165,y=670)
-    
+        display_numbers.config(text="The Numbers You Want To Sort Are : "+self.user_entry)
+        #display_numbers.place(x=165,y=670)
         
+display_numbers=Label(SCREEN,text="The Numbers You Want To Sort Are : " +user_entry,bg="Steelblue1")  
+display_numbers.place(x=165,y=670)
 buttons=Buttons()
 buttons.user_input_run(entry_one_string,entry_two_string,entry_three_string,entry_four_string,entry_five_string)
 buttons.display_numbers()
-button_show_list=Button(SCREEN,text="Done!",command=buttons.display_numbers).place(x=245,y=630)
+button_show_list=Button(SCREEN,text="Done!",command=buttons.display_numbers)
+button_show_list.place(x=245,y=630) 
 
 SCREEN.mainloop()
