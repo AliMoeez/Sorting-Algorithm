@@ -43,8 +43,15 @@ entry_sort_list=OptionMenu(SCREEN,entry_sort_string,*entry_sort).place(x=630,y=5
 
 list_entry=[]
 
-validation_condition_1=False
+validation_condition_S_1=False
+validation_condition_S_2=False
+validation_condition_S_3=False
+
 validation_condition_2=False
+
+sorting_condition_1=False
+sorting_condition_2=False
+sorting_condition_3=False
 
 class Buttons:
     def user_input_run(self,entry_one_string,entry_two_string,entry_three_string,entry_four_string,entry_five_string):
@@ -65,26 +72,37 @@ class Buttons:
         display_choice_sort.config(text="The Type of Sort You Want Is A "+self.entry_sort_string.get())
         
 class Sorting:
-    def validation_of_input(self,validation_condition_1,validation_condition_2):
-        self.validation_condition_1=validation_condition_1 ; self.validation_condition_2=validation_condition_2
-        self.entry_sort_string=entry_sort_string
+    def validation_of_input(self,validation_condition_S_1,validation_condition_S_2,validation_condition_S_3,validation_condition_2,sorting_condition_1,sorting_condition_2,sorting_condition_3):
+        self.validation_condition_S_1=validation_condition_S_1 ; self.validation_condition_S_2=validation_condition_S_2 ; self.validation_condition_S_3=validation_condition_S_3
+        self.validation_condition_2=validation_condition_2
+        self.sorting_condition_1=sorting_condition_1; self.sorting_condition_2=sorting_condition_2 ; self.sorting_condition_3=sorting_condition_3
+        self.entry_sort_string=entry_sort_string ; self.user_entry=user_entry
         self.entry_one_string=entry_one_string ; self.entry_two_string=entry_two_string ; self.entry_three_string=entry_three_string 
         self.entry_four_string=entry_four_string ; self.entry_five_string=entry_five_string
         
-        if not  self.entry_sort_string.get()=="--":
-            self.validation_condition_1=True
-            print("cond 1 ture")
+    def check_validation(self):
+        
+        if self.entry_sort_string.get()=="Quick Sort":
+            self.validation_condition_S_1=True   
+            self.validation_condition_S_2=False ; self.validation_condition_S_3=False
+        if self.entry_sort_string.get()=="Bubble Sort":
+            self.validation_condition_S_2=True 
+            self.validation_condition_S_1=False ; self.validation_condition_S_3=False
+        if self.entry_sort_string.get()=="Selection Sort":
+            self.validation_condition_S_3=True
+            self.validation_condition_S_1=False ; self.validation_condition_S_2=False
             
-        if (not self.entry_one_string.get()=="--" and not self.entry_two_string.get()=="--" and not self.entry_three_string.get()=="--" and 
-            not self.entry_four_string.get()=="--" and not self.entry_five_string.get()=="--"):
+        if (not self.entry_one_string=="--" and not self.entry_two_string=="--" and not self.entry_three_string=="--" and 
+            not self.entry_four_string=="--" and not self.entry_five_string=="--"):
             self.validation_condition_2=True
             
-    def check_validation(self):
-        if self.validation_condition_1 and self.validation_condition_2:
-            print("yes")
-        print(self.validation_condition_1,"one", self.entry_sort_string.get())
-      #  print(self.validation_condition_2,"two")
-            
+        if self.validation_condition_S_1 and self.validation_condition_2:
+            self.sorting_condition_1=True
+        if self.validation_condition_S_2 and self.validation_condition_2:
+            self.sorting_condition_2=True 
+        if self.validation_condition_S_3 and self.validation_condition_2:
+            self.sorting_condition_3=True
+  
         
         
 display_numbers=Label(SCREEN,text="The Numbers You Want To Sort Are : " +user_entry,bg="Steelblue1")  
@@ -103,7 +121,7 @@ button_choose_sort_type=Button(SCREEN,text="Done!",command=buttons.sort_user_cho
 button_choose_sort_type.place(x=637,y=630)
 
 sorting=Sorting()
-sorting.validation_of_input(validation_condition_1,validation_condition_2)
+sorting.validation_of_input(validation_condition_S_1,validation_condition_S_2,validation_condition_S_3,validation_condition_2,sorting_condition_1,sorting_condition_2,sorting_condition_3)
 sorting.check_validation()
 
 button_validation_results=Button(SCREEN,text="Sort!",command=sorting.check_validation)
