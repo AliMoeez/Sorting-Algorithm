@@ -56,6 +56,8 @@ sorting_condition_1=False
 sorting_condition_2=False
 sorting_condition_3=False
 
+another_sort=False
+
 user_entry=''
 
 class Buttons:
@@ -78,13 +80,13 @@ class Buttons:
         
 class Sorting:
     def validation_of_input(self,validation_on_S_1,validation_condition_S_2,validation_condition_S_3,validation_condition_2,
-                            sorting_condition_1,sorting_condition_2,sorting_condition_3,list_entry,list_axis):
+                            sorting_condition_1,sorting_condition_2,sorting_condition_3,list_entry,list_axis,another_sort):
         self.validation_condition_S_1=validation_condition_S_1 ; self.validation_condition_S_2=validation_condition_S_2 ; self.validation_condition_S_3=validation_condition_S_3
         self.validation_condition_2=validation_condition_2
         self.sorting_condition_1=sorting_condition_1; self.sorting_condition_2=sorting_condition_2 ; self.sorting_condition_3=sorting_condition_3
         self.entry_sort_string=entry_sort_string ; self.user_entry=user_entry
         self.entry_one_string=entry_one_string ; self.entry_two_string=entry_two_string ; self.entry_three_string=entry_three_string 
-        self.entry_four_string=entry_four_string ; self.entry_five_string=entry_five_string ; self.list_entry=list_entry ; self.list_axis=list_axis
+        self.entry_four_string=entry_four_string ; self.entry_five_string=entry_five_string ; self.list_entry=list_entry ; self.list_axis=list_axis ; self.another_sort=another_sort
         
     def check_validation(self):
         if self.entry_sort_string.get()=="Quick Sort":
@@ -110,47 +112,67 @@ class Sorting:
             if button_validation_results["state"]==NORMAL:
                 button_validation_results["state"]=DISABLED
             else:
-                button_validation_results["state"]=NORMAL
+                button_validation_results["state"]=NORMAL 
             
-            figure=plt.figure(figsize=(10,5))
+            #figure for plot before quick sorting
+            figure=plt.figure(figsize=(5,5))
             plt.subplot(111)
             plt.bar(self.list_axis,self.list_entry)
-           # ax.set_ylim(ymin=0)
-        #    figure=plt.figure()
-        #    figure.add_subplot(111).plot(self.list_axis,self.list_entry)
-         #   graph=plt.plot(self.list_axis,self.list_entry)   
-          #  print(type(graph))
             canvas_for_graph=FigureCanvasTkAgg(figure,master=SCREEN)
-            canvas_for_graph.draw()
-            canvas_for_graph.get_tk_widget().place(x=200,y=200)
-          #  toolbar=NavigationToolbar2Tk(canvas_for_graph,SCREEN)
-          #  toolbar.update()
-          #  canvas_for_graph.get_tk_widget().place(x=200,y=200)
+            canvas_for_graph.get_tk_widget().place(x=150,y=180)
+            canvas_label_before=Label(SCREEN,text="List Before Quick Sort",bg="White")
+            canvas_label_before.place(x=200,y=150)
+            canvas_label_before.config(font=("arial",20))
             
-          #  if len(self.list_entry)>=5:
-          #      print("del")
-          #      del self.list_entry[-1] # ; self.list_entry[-2] ; self.list_entry[-3]  ; self.list_entry[-4]   
-          #      print(self.list_entry,"after")
-          #  print(self.list_entry)
-        #    graph=plt.bar(self.list_axis,self.list_entry)
-        #    show_graph=FigureCanvasTkAgg(graph,SCREEN)
-        #    show_graph.draw()
-        #    show_graph.get_tk_widget().place(x=200,y=200)
-          #  print("here")
-            
-            
-#            plot_axes.set_facecolor((1.0,0.627,0.478))
-#plot_graph=plt.plot(times,show_graph_a1)
-#show_screen=FigureCanvasTkAgg(plot,screen)
-#show_screen.draw()
-#show_screen.get_tk_widget().place(x=500,y=100
-            
+            #code to turn unsorted list to a sorted one using quick sort
+            lists_small=[] ; lists_mid=[] ; lists_big=[]
+            lists_small_string=[] ; lists_mid_string=[] ; lists_big_string=[]
+            pivot_number=self.list_entry[2]
+            for i in range(len(self.list_entry)):
+                if self.list_entry[i]>pivot_number:
+                    lists_big.append(self.list_entry[i]) ; lists_big_string.append(self.list_axis[i])
+                if self.list_entry[i]<pivot_number:
+                    lists_small.append(self.list_entry[i]) ; lists_small_string.append(self.list_axis[i])
+                if self.list_entry[i]==pivot_number:
+                    lists_mid.append(self.list_entry[i]) ; lists_mid_string.append(self.list_axis[i])
+            for i in range(len(lists_small)):   
+                for q in range(len(lists_small)-i-1):
+                    if lists_small[q]>lists_small[q+1]:
+                        lists_small[q],lists_small[q+1]=lists_small[q+1],lists_small[q] ; lists_small_string[q],lists_small_string[q+1]=lists_small_string[q+1],lists_small_string[q]
+            for i in range(len(lists_big)):
+                for q in range(len(lists_big)-i-1):
+                    if lists_big[q]>lists_big[q+1]:
+                        lists_big[q],lists_big[q+1]=lists_big[q+1],lists_big[q] ; lists_big_string[q],lists_big_string[q+1]=lists_big_string[q+1],lists_big_string[q]
+            lists_new=lists_small+lists_mid+lists_big ; lists_new_string=lists_small_string+lists_mid_string+lists_big_string
+          
+            #figure for plot after adding quick sort 
+            figure_new=plt.figure(figsize=(5,5))
+            plt.subplot(111)
+            plt.bar(lists_new_string,lists_new)
+            canvas_for_completed_graph=FigureCanvasTkAgg(figure_new,master=SCREEN)
+            canvas_for_completed_graph.get_tk_widget().place(x=550,y=180)
+            canvas_label_after=Label(SCREEN,text="List After Quick Sort",bg="White")
+            canvas_label_after.place(x=600,y=150)
+            canvas_label_after.config(font=("arial",20))
+            self.another_sort=True
+            print(self.another_sort)
+            #code for user to choose another set of numbers to sort
+     
         if self.validation_condition_S_2 and self.validation_condition_2:
             self.sorting_condition_2=True 
             self.sorting_condition_1=False ; self.sorting_condition_3=False
         if self.validation_condition_S_3 and self.validation_condition_2:
             self.sorting_condition_3=True
             self.sorting_condition_1=False ; self.sorting_condition_2=False
+            
+    def sort_again(self):
+        if self.another_sort is True:
+            button_ask_again["state"]=NORMAL
+        else:
+            pass
+               # button_ask_again["state"]=DISABLED
+            #if button_validation_results["state"]=DISABLED:
+            #    button_validation_results["state"]=NORMAL
             
     """    print(self.sorting_condition_1)
     def quick_sort(self):
@@ -180,11 +202,15 @@ button_choose_sort_type.place(x=637,y=630)
 
 sorting=Sorting()
 sorting.validation_of_input(validation_condition_S_1,validation_condition_S_2,validation_condition_S_3,
-                            validation_condition_2,sorting_condition_1,sorting_condition_2,sorting_condition_3,list_entry,list_axis)
+                            validation_condition_2,sorting_condition_1,sorting_condition_2,sorting_condition_3,list_entry,list_axis,another_sort)
 sorting.check_validation()
+sorting.sort_again()
 #sorting.quick_sort()
 
-button_validation_results=Button(SCREEN,text="Sort!",command=sorting.check_validation)
+button_validation_results=Button(SCREEN,text="Sort!",command=lambda:[sorting.check_validation(),sorting.sort_again()])
 button_validation_results.place(x=470,y=720)
+
+button_ask_again=Button(SCREEN,text="Do You Want To Sort Again?",command=sorting.sort_again)
+button_ask_again.place(x=470,y=750)
 
 SCREEN.mainloop()
