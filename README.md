@@ -161,6 +161,40 @@ class Sorting:
         if self.validation_condition_S_2 and self.validation_condition_2:
             self.sorting_condition_2=True 
             self.sorting_condition_1=False ; self.sorting_condition_3=False
+            self.list_entry.append(int(self.entry_one_string.get())) ; self.list_entry.append(int(self.entry_two_string.get()))
+            self.list_entry.append(int(self.entry_three_string.get())) ; self.list_entry.append(int(self.entry_four_string.get())) ; self.list_entry.append(int(self.entry_five_string.get()))
+            if button_validation_results["state"]==NORMAL:
+                button_validation_results["state"]=DISABLED
+            else:
+                button_validation_results["state"]=NORMAL 
+                
+            #figure for plot before bubble sorting
+            figure=plt.figure(figsize=(5,5))
+            plt.subplot(111)
+            plt.bar(self.list_axis,self.list_entry)
+            canvas_for_graph=FigureCanvasTkAgg(figure,master=SCREEN)
+            canvas_for_graph.get_tk_widget().place(x=150,y=180)
+            canvas_label_before=Label(SCREEN,text="List Before Bubble Sort",bg="White")
+            canvas_label_before.place(x=200,y=150)
+            canvas_label_before.config(font=("arial",20))
+            
+            #code for bubble sort
+            for i in range(len(self.list_entry)):
+                for q in range(len(self.list_entry)-i-1):
+                    if self.list_entry[q]>self.list_entry[q+1]:
+                        self.list_entry[q],self.list_entry[q+1]=self.list_entry[q+1],self.list_entry[q]
+            #code for new plot
+            figure_new=plt.figure(figsize=(5,5))
+            plt.subplot(111)
+            plt.bar(self.list_axis,self.list_entry)
+            canvas_for_completed_graph=FigureCanvasTkAgg(figure_new,master=SCREEN)
+            canvas_for_completed_graph.get_tk_widget().place(x=550,y=180)
+            canvas_label_after=Label(SCREEN,text="List After Bubble Sort",bg="White")
+            canvas_label_after.place(x=600,y=150)
+            canvas_label_after.config(font=("arial",20))
+            self.another_sort=True
+            print(self.another_sort)                
+            
         if self.validation_condition_S_3 and self.validation_condition_2:
             self.sorting_condition_3=True
             self.sorting_condition_1=False ; self.sorting_condition_2=False
@@ -169,10 +203,20 @@ class Sorting:
         if self.another_sort is True:
             button_ask_again["state"]=NORMAL
         else:
-            pass
-               # button_ask_again["state"]=DISABLED
-            #if button_validation_results["state"]=DISABLED:
-            #    button_validation_results["state"]=NORMAL
+            if button_ask_again["state"]==NORMAL:
+                button_ask_again["state"]=DISABLED
+    
+    def sort_again_cond(self):
+        if button_ask_again["state"]==NORMAL:
+            self.list_entry.clear() ; self.list_axis.clear()
+            self.list_axis=["Number 1","Number 2","Number 3","Number 4","Number 5"]
+            self.entry_one_string.set(entry_one[0]) ; self.entry_two_string.set(entry_two[0]) ; self.entry_three_string.set(entry_three[0])
+            self.entry_four_string.set(entry_four[0]) ; self.entry_five_string.set(entry_five[0]) ; self.entry_sort_string.set(entry_sort[0])
+            button_validation_results["state"]=NORMAL
+            
+        
+                                                                                                                               
+                                                                                                                               
             
     """    print(self.sorting_condition_1)
     def quick_sort(self):
@@ -204,13 +248,15 @@ sorting=Sorting()
 sorting.validation_of_input(validation_condition_S_1,validation_condition_S_2,validation_condition_S_3,
                             validation_condition_2,sorting_condition_1,sorting_condition_2,sorting_condition_3,list_entry,list_axis,another_sort)
 sorting.check_validation()
-sorting.sort_again()
+
 #sorting.quick_sort()
 
 button_validation_results=Button(SCREEN,text="Sort!",command=lambda:[sorting.check_validation(),sorting.sort_again()])
 button_validation_results.place(x=470,y=720)
 
-button_ask_again=Button(SCREEN,text="Do You Want To Sort Again?",command=sorting.sort_again)
+button_ask_again=Button(SCREEN,text="Do You Want To Sort Again?",command=lambda: [sorting.sort_again(),sorting.sort_again_cond()])
 button_ask_again.place(x=470,y=750)
+
+sorting.sort_again()
 
 SCREEN.mainloop()
